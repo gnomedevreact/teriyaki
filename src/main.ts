@@ -7,9 +7,11 @@ import { PrismaService } from "./PrismaService/prisma.service";
 dotenv.config();
 
 async function bootstrap() {
+  const port = process.env.PORT || 3000;
+
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix("/api");
   app.useGlobalGuards(new AuthGuard(new PrismaService()));
-  await app.listen(3000);
+  await app.listen(port);
 }
 bootstrap();
