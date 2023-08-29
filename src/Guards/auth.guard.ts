@@ -16,6 +16,8 @@ export class AuthGuard implements CanActivate {
       "/api/user/register",
       "/api/user/login",
       "/api/token",
+      "/api/stripe-webhook",
+      "/api/user",
     ];
 
     if (excludedPaths.includes(request.path)) {

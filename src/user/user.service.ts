@@ -14,7 +14,11 @@ export class UserService {
   constructor(private prisma: PrismaService) {}
 
   async getAllUsers() {
-    return await this.prisma.user.findMany();
+    return await this.prisma.user.findMany({
+      include: {
+        sites: true,
+      },
+    });
   }
 
   async registerUser(dto: UserDto) {
