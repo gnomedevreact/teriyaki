@@ -16,6 +16,7 @@ export class AuthGuard implements CanActivate {
       "/api/user/register",
       "/api/user/login",
       "/api/token",
+      "/api/stripe-webhook",
     ];
 
     if (excludedPaths.includes(request.path)) {
@@ -26,6 +27,14 @@ export class AuthGuard implements CanActivate {
       const token = headers.split(" ")[1];
 
       if (!token) throw new UnauthorizedException();
+
+      try {
+        const v = jwt.verify(token, process.env.SECRET_KEY);
+        console.log(v);
+      } catch (err) {
+        console.log(err);
+        throw new UnauthorizedException();
+      }
 
       const decoded = jwt.decode(token);
 
@@ -41,6 +50,8 @@ export class AuthGuard implements CanActivate {
       } else {
         throw new UnauthorizedException();
       }
+    } else {
+      throw new UnauthorizedException();
     }
   }
 }
