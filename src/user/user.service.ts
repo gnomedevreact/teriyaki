@@ -21,12 +21,25 @@ export class UserService {
     });
   }
 
+  async getUser(userId: string) {
+    return await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      include: {
+        sites: true,
+      },
+    });
+  }
+
   async registerUser(dto: UserDto) {
     const isUser = await this.prisma.user.findUnique({
       where: {
         email: dto.email,
       },
     });
+
+    console.log(isUser);
 
     if (isUser) throw new ConflictException("User already exists");
 
@@ -39,6 +52,9 @@ export class UserService {
           password,
           isAdmin: false,
         },
+        include: {
+          sites: true,
+        },
       });
 
       const { accessToken, refreshToken } = generateTokens(user.id);
@@ -50,19 +66,16 @@ export class UserService {
   }
 
   async loginUser(dto: UserDto) {
-    const isUser = await this.prisma.user.findUnique({
-      where: {
-        email: dto.email,
-      },
-    });
-
-    if (!isUser) throw new ConflictException("User doesnt exist");
-
     const user = await this.prisma.user.findUnique({
       where: {
         email: dto.email,
       },
+      include: {
+        sites: true,
+      },
     });
+
+    if (!user) throw new ConflictException("User doesnt exist");
 
     const isValidPassword = await argon2.verify(user.password, dto.password);
 

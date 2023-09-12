@@ -8,7 +8,7 @@ export class SiteController {
   constructor(private readonly SiteService: SiteService) {}
 
   @Post()
-  async createSiteObject(@Body() dto: SiteDto, @Auth() userId: string) {
-    return this.SiteService.createSiteObject(dto, userId);
+  async createSiteObject() {
+    return this.SiteService.updateSiteStatus();
   }
 }

@@ -1,3 +1,4 @@
+import { Auth } from "src/decorator/Auth.decorator";
 import { UserDto } from "./dto/user.dto";
 import { UserService } from "./user.service";
 import { Body, Controller, Get, Post } from "@nestjs/common";
@@ -9,6 +10,11 @@ export class UserController {
   @Get()
   async getAllUsers() {
     return this.UserService.getAllUsers();
+  }
+
+  @Get("account")
+  async getUser(@Auth() userId: string) {
+    return this.UserService.getUser(userId);
   }
 
   @Post("register")
