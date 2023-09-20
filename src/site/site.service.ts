@@ -27,7 +27,7 @@ export class SiteService {
 
     const updatePromises: Promise<any>[] = [];
 
-    inactiveSites.forEach((site) => {
+    inactiveSites.forEach(async (site) => {
       const updatePromise = this.prisma.site.update({
         where: { id: site.id },
         data: { active: false },

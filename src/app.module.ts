@@ -8,9 +8,10 @@ import { StripeModule } from "@golevelup/nestjs-stripe";
 import { StripeWebhookController } from "./stripe/stripe.controller";
 import { PrismaService } from "./PrismaService/prisma.service";
 import { EmailModule } from './email/email.module';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
-  imports: [UserModule, SiteModule, TokenModule, EmailModule],
+  imports: [UserModule, SiteModule, TokenModule, EmailModule, ChatModule],
   controllers: [AppController, StripeWebhookController],
   providers: [AppService, PrismaService],
 })

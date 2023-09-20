@@ -17,6 +17,7 @@ export class UserService {
     return await this.prisma.user.findMany({
       include: {
         sites: true,
+        chats: true,
       },
     });
   }
@@ -28,6 +29,7 @@ export class UserService {
       },
       include: {
         sites: true,
+        chats: true,
       },
     });
   }
@@ -58,6 +60,14 @@ export class UserService {
       });
 
       const { accessToken, refreshToken } = generateTokens(user.id);
+
+      await this.prisma.chat.create({
+        data: {
+          users: {
+            connect: [{ id: user.id }, { id: "6505b7322c9d2e3947a7e59c" }],
+          },
+        },
+      });
 
       return { user, accessToken, refreshToken };
     } catch (error) {
